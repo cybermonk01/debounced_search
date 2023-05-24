@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Live Search Input - Debouncing</title>
+  </head>
+  <body>
+    <input type="text" id="search-input" placeholder="Search..." />
+    <ul id="results">
+      Searching for:
+    </ul>
+
+    <script>
+      function debounce(func, delay) {
+        let timeoutId;
+        return function (...args) {
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => {
+            func.apply(this, args);
+          }, delay);
+        };
+      }
+
+      function search(query) {
+        console.log(`Searching for: ${query}`);
+        document.querySelector("#results").innerText =
+          `Searching for: ` + query;
+      }
+
+      const debouncedSearch = debounce(search, 500);
+
+      const searchInput = document.getElementById("search-input");
+      searchInput.addEventListener("input", function (event) {
+        const query = event.target.value;
+        debouncedSearch(query);
+      });
+    </script>
+  </body>
+</html>
